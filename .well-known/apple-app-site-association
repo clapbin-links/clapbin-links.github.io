@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["여기에TeamID.Real.MyApp"],
+        "components": [
+          { "/": "/sso" }
+        ]
+      }
+    ]
+  }
+}
