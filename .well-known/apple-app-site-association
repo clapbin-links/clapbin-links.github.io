@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["여기에TeamID.Real.MyApp"],
+        "appIDs": ["T6CTX325BK.Real.MyApp"],
         "components": [
           { "/": "/sso" }
         ]
