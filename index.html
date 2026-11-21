@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>브릿지 연습 페이지</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; margin: 24px; line-height: 1.5; }
+    button { display: block; width: 100%; padding: 14px; margin: 10px 0; font-size: 16px;
+             border-radius: 10px; border: 1px solid #ccc; background: #f5f5f7; }
+    #status { padding: 10px; border-radius: 8px; background: #eef; }
+    #log { white-space: pre-wrap; background: #111; color: #0f0; padding: 12px;
+           border-radius: 8px; min-height: 140px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h2>브릿지 연습 페이지</h2>
+  <p id="status"></p>
+
+  <button onclick="send('ping')">앱에게 인사하기 (ping)</button>
+  <button onclick="send('getLocation')">현재 위치 요청하기 (getLocation)</button>
+  <button onclick="send('dance')">앱이 모르는 부탁 보내기 (dance)</button>
+
+  <h3>기록</h3>
+  <div id="log"></div>
+
+  <script>
+    // 웹과 앱이 약속한 통로 이름
+    var BRIDGE_NAME = 'myAppBridge';
+    var requestNumber = 0;
+
+    // 앱이 만들어 준 통로를 찾아요. 일반 브라우저에는 없어요.
+    function bridge() {
+      if (window.webkit && window.webkit.messageHandlers) {
+        return window.webkit.messageHandlers[BRIDGE_NAME];
+      }
+      return undefined;
+    }
+
+    function writeLog(text) {
+      var log = document.getElementById('log');
+      log.textContent = text + '\n' + log.textContent;
+    }
+
+    // 웹 → 앱: 부탁 보내기
+    function send(action) {
+      requestNumber += 1;
+      var message = { action: action, requestId: 'r' + requestNumber };
+      var target = bridge();
+      if (!target) {
+        writeLog('보내기 실패 (통로 없음): ' + JSON.stringify(message));
+        return;
+      }
+      target.postMessage(message);
+      writeLog('웹 → 앱: ' + JSON.stringify(message));
+    }
+
+    // 앱 → 웹: 앱이 대답할 때 이 함수를 불러요
+    window.onAppResponse = function (response) {
+      writeLog('앱 → 웹: ' + JSON.stringify(response));
+    };
+
+    document.getElementById('status').textContent = bridge()
+      ? '✅ 앱 안에서 열렸어요 (통로 연결됨)'
+      : 'ℹ️ 통로가 없어요 (일반 브라우저이거나, 앱이 아직 통로를 안 만들었어요)';
+  </script>
+</body>
+</html>
