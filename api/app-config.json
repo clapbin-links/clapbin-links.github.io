@@ -1,6 +1,6 @@
 {
-  "minimumVersion": "1.2.0",
-  "latestVersion": "1.5.0",
+  "minimumVersion": "1.0.0",
+  "latestVersion": "1.0.1",
   "updateMessage": "더 안정적인 서비스를 위해 최신 버전으로 업데이트해 주세요.",
   "storeUrl": "https://www.apple.com/kr/app-store/"
 }
